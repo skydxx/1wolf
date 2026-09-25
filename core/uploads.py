@@ -24,12 +24,14 @@ def ext_allowed(filename: str) -> bool:
 
 def looks_like_declared(blob: bytes, ext: str) -> bool:
     """Грубая проверка сигнатуры: .png не должен оказаться исполняемым файлом."""
+    if ext == "webp":
+        return len(blob) >= 12 and blob[:4] == b"RIFF" and blob[8:12] == b"WEBP"
     for magic, kind in SNIFF.items():
         if blob.startswith(magic):
             if kind == "jpg":
                 return ext in ("jpg", "jpeg")
             return ext == kind
-    return ext not in ("png", "jpg", "jpeg", "gif", "pdf")
+    return ext not in ("png", "jpg", "jpeg", "gif", "pdf", "webp")
 
 
 def save_many(file_storages, *, max_files: int | None = None) -> tuple[list[dict], list[str]]:

@@ -7,7 +7,7 @@ os.environ.update(ENV="test", DB_PATH=str(_tmp / "data.db"), UPLOAD_DIR=str(_tmp
 
 from flask import Flask  # noqa: E402
 from public.app import app, safe_next  # noqa: E402
-from core import security  # noqa: E402
+from core import security, uploads  # noqa: E402
 
 
 def test_public_pages_load():
@@ -37,3 +37,8 @@ def test_client_ip_uses_only_trusted_proxy():
         headers={"CF-Connecting-IP": "192.0.2.20", "X-Forwarded-For": "192.0.2.30"},
     ):
         assert security.client_ip() == "203.0.113.5"
+
+
+def test_webp_requires_webp_signature():
+    assert not uploads.looks_like_declared(b"<html>", "webp")
+    assert uploads.looks_like_declared(b"RIFF" + b"\0" * 4 + b"WEBP" + b"VP8 ", "webp")
