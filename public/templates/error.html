@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ code }} — {{ cfg.CLAN_TAG_DISPLAY }}{% endblock %}
+
+{% block body_class %}page-center{% endblock %}
+
+{% block body %}
+<section class="page-top error-page">
+  <div class="wrap narrow">
+    <div class="error-code">{{ code }}</div>
+    <p class="sec-sub">{{ text }}</p>
+    <div class="error-actions">
+      <a class="btn btn-primary" href="{{ url_for('index') }}">На главную</a>
+      <a class="btn btn-dc" href="{{ cfg.DISCORD_INVITE }}" target="_blank" rel="noopener">Discord</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

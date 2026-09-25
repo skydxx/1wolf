@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Состав полка — {{ cfg.CLAN_TAG_DISPLAY }}{% endblock %}
+{% block desc %}Действующий состав {{ cfg.CLAN_TAG_DISPLAY }}: пилоты и танкисты полка.{% endblock %}
+
+{% block body %}
+<section class="page-top">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-kicker">// Полк</div>
+      <h1 class="sec-title">Состав {{ cfg.CLAN_TAG_DISPLAY }}</h1>
+      <p class="sec-sub">Те, кто уже летает и ездит в цветах полка. Список ведут командиры вручную.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>{{ counts.active }}</b><span>В составе</span></div>
+      <div class="stat"><b>{{ counts.air }}</b><span>Авиация</span></div>
+      <div class="stat"><b>{{ counts.ground }}</b><span>Танки</span></div>
+    </div>
+
+    {% if rows %}
+      <div class="roster-table-wrap">
+        <table class="roster-table">
+          <thead>
+            <tr><th>Ник WT</th><th>Discord</th><th>Направление</th><th>Должность</th><th>В полку с</th><th>Рейтинг</th></tr>
+          </thead>
+          <tbody>
+            {% for m in rows %}
+              {% set wt = rating_by_nick.get(m.nick.lower()) %}
+              <tr>
+                <td data-l="Ник WT"><b>{{ m.nick }}</b>{% if m.note %}<div class="roster-note">{{ m.note }}</div>{% endif %}</td>
+                <td data-l="Discord"><span class="mono">{{ m.discord_nick or '—' }}</span></td>
+                <td data-l="Направление">{% if m.branch %}<span class="badge new">{{ m.branch }}</span>{% else %}—{% endif %}</td>
+                <td data-l="Должность">{{ m.title or '—' }}</td>
+                <td data-l="В полку с"><span class="mono muted">{{ m.joined_at or '—' }}</span></td>
+                <td data-l="Рейтинг">{% if wt %}<span class="mono">#{{ wt.position }} · {{ wt.rating }}</span>{% else %}—{% endif %}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty roster-empty">
+        <div class="roster-empty-ico">🐺</div>
+        <p>Состав пока не заполнен — командиры вносят его вручную.</p>
+      </div>
+    {% endif %}
+
+    <div class="cta" style="margin-top:40px">
+      <h2>Хочешь в этот список?</h2>
+      <p>Подавай заявку — рассмотрим и позовём в Discord.</p>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="{{ url_for('apply_form') }}">Подать заявку</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

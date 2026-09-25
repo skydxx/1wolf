@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Вход — {{ cfg.CLAN_TAG_DISPLAY }}{% endblock %}
+
+{% block body_class %}page-center{% endblock %}
+
+{% block body %}
+<section class="page-top">
+  <div class="wrap auth-box">
+    <div class="sec-kicker">// Вход</div>
+    <h1 class="auth-title">С возвращением</h1>
+    <p class="auth-sub">Аккаунт на сайте привязан к Discord — нужно состоять на нашем сервере.</p>
+    {% include "_flash.html" %}
+    <a class="btn btn-dc" style="width:100%" href="{{ url_for('discord_login', next=request.args.get('next', '')) }}">Войти через Discord</a>
+    <p class="hint" style="text-align:center;margin:18px 0">или паролем, если уже задавал</p>
+    <form class="form" method="post" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="next" value="{{ request.args.get('next', '') }}">
+      <div class="field">
+        <label for="login">Логин или e-mail</label>
+        <input id="login" type="text" name="login" maxlength="120" value="{{ login_value }}" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="password">Пароль</label>
+        <input id="password" type="password" name="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn" type="submit">Войти по паролю</button>
+    </form>
+    <p class="auth-alt">Нет аккаунта? Просто нажми «Войти через Discord» — заведём автоматически.</p>
+  </div>
+</section>
+{% endblock %}

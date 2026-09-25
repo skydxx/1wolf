@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Новости — {{ cfg.CLAN_TAG_DISPLAY }}{% endblock %}
+
+{% block body %}
+<section class="page-top">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-kicker">// Сводки</div>
+      <h1 class="sec-title">Новости полка</h1>
+      <p class="sec-sub">Итоги полковых, наборы, изменения в составе и всё, что стоит знать.</p>
+    </div>
+
+    {% if posts %}
+      <div class="news-grid">
+        {% for p in posts %}
+          <a class="card post-card" href="{{ url_for('news_post', slug=p.slug) }}">
+            {% if p.cover %}<img class="post-cover" src="{{ url_for('media', stored_name=p.cover) }}" alt="">{% endif %}
+            <div class="post-date mono">{{ p.published_at|dt('%d.%m.%Y') }}{% if p.pinned %} · закреплено{% endif %}</div>
+            <h3>{{ p.title }}</h3>
+            <p>{{ p.summary or '' }}</p>
+          </a>
+        {% endfor %}
+      </div>
+      {% if pages > 1 %}
+        <div class="pager">
+          {% for n in range(1, pages + 1) %}
+            <a class="{% if n == page %}on{% endif %}" href="{{ url_for('news_list', page=n) }}">{{ n }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="empty">Новостей пока нет.</div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

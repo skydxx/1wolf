@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} — {{ cfg.CLAN_TAG_DISPLAY }}{% endblock %}
+{% block desc %}{{ post.summary or post.title }}{% endblock %}
+{% block og_title %}{{ post.title }}{% endblock %}
+{% block og_desc %}{{ post.summary or '' }}{% endblock %}
+
+{% block body %}
+<article class="page-top">
+  <div class="wrap narrow">
+    <a class="back-link mono" href="{{ url_for('news_list') }}">← все новости</a>
+    <h1 class="post-title">{{ post.title }}</h1>
+    <div class="post-meta mono">
+      {{ post.published_at|dt }} · {{ post.author_name or cfg.CLAN_TAG_DISPLAY }} · {{ post.views }} просмотров
+    </div>
+    {% if post.cover %}<img class="post-hero" src="{{ url_for('media', stored_name=post.cover) }}" alt="">{% endif %}
+    <div class="prose">{{ post.body|rich }}</div>
+  </div>
+</article>
+
+{% if more %}
+<section>
+  <div class="wrap narrow">
+    <div class="sec-kicker">// Ещё</div>
+    <div class="news-mini">
+      {% for p in more %}
+        <a class="mini" href="{{ url_for('news_post', slug=p.slug) }}">
+          <span class="mono">{{ p.published_at|dt('%d.%m.%Y') }}</span>
+          <b>{{ p.title }}</b>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

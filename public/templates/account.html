@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}Аккаунт — {{ cfg.CLAN_TAG_DISPLAY }}{% endblock %}
+
+{% block body %}
+<section class="page-top">
+  <div class="wrap">
+    <div class="sec-head sec-head-row">
+      <div>
+        <div class="sec-kicker">// Аккаунт</div>
+        <h1 class="sec-title">{{ user.username }}</h1>
+      </div>
+      <form method="post" action="{{ url_for('logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-sm" type="submit">Выйти</button>
+      </form>
+    </div>
+
+    {% include "_flash.html" %}
+
+    {% if season_promos %}
+      <div class="notice ok-notice" style="margin-bottom:20px">
+        {% for p in season_promos %}
+          Промокод на VPN {{ p.discount }}% за сезон {{ p.season_label }} ({{ p.tier }}): <b>{{ p.code }}</b>
+          — активен до {{ p.expires_at|dt }}.<br>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if roster_member %}
+      <div class="notice ok-notice" style="margin-bottom:20px">
+        Ты уже в составе {{ cfg.CLAN_TAG_DISPLAY }}{% if roster_member.title %} ({{ roster_member.title }}){% endif %} —
+        заявку подавать не нужно.
+      </div>
+    {% endif %}
+
+    <div class="acc-grid">
+      <div class="card">
+        <h3>Мои заявки</h3>
+        {% if apps %}
+          <div class="acc-apps">
+            {% for a in apps %}
+              <div class="acc-app">
+                <div>
+                  <b>#{{ a.id }} · {{ a.nick }}</b>
+                  <span class="mono dim">{{ a.created_at|dt }}</span>
+                </div>
+                <span class="badge {{ a.status }}">{{ cfg.STATUS_RU[a.status] }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% elif not roster_member %}
+          <p>Заявок пока нет.</p>
+          <p class="acc-cta"><a class="btn btn-sm btn-primary" href="{{ url_for('apply_form') }}">Подать заявку</a></p>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>Discord</h3>
+        {% if user.discord_id %}
+          <p>Привязан: <b>{{ user.discord_username }}</b></p>
+        {% else %}
+          <p>Discord не привязан.</p>
+          <p class="acc-cta"><a class="btn btn-sm btn-dc" href="{{ url_for('discord_login', link=1) }}">Привязать Discord</a></p>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>Telegram</h3>
+        {% if user.telegram_id %}
+          <p>Привязан: <b>@{{ user.telegram_username or user.telegram_id }}</b></p>
+          <form class="form" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="unlink_telegram">
+            <button class="btn btn-sm" type="submit">Отвязать</button>
+          </form>
+        {% elif tg_deep_link %}
+          <p>Перейди по ссылке в Telegram и нажми «Start» — код живёт 10 минут:</p>
+          <p><a class="btn btn-sm" href="{{ tg_deep_link }}" target="_blank" rel="noopener">Открыть @{{ cfg.TELEGRAM_BOT_USERNAME }}</a></p>
+          <p class="hint">Или пришли боту: <span class="mono">/link {{ tg_code }}</span></p>
+        {% else %}
+          <p>Telegram не привязан.</p>
+          <form class="form" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="link_telegram">
+            <button class="btn btn-sm" type="submit">Привязать Telegram</button>
+          </form>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>Профиль</h3>
+        <form class="form" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="action" value="profile">
+          <div class="field">
+            <label for="wt_nick">Ник в War Thunder</label>
+            <input id="wt_nick" type="text" name="wt_nick" maxlength="40" value="{{ user.wt_nick or '' }}">
+          </div>
+          <div class="field">
+            <label for="discord_nick">Ник в Discord</label>
+            <input id="discord_nick" type="text" name="discord_nick" maxlength="40" value="{{ user.discord_nick or '' }}">
+          </div>
+          <button class="btn btn-sm" type="submit">Сохранить</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>Смена пароля</h3>
+        <form class="form" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="action" value="password">
+          <div class="field">
+            <label for="current">Текущий пароль</label>
+            <input id="current" type="password" name="current" autocomplete="current-password" required>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="npassword">Новый</label>
+              <input id="npassword" type="password" name="password" autocomplete="new-password" required>
+            </div>
+            <div class="field">
+              <label for="npassword2">Ещё раз</label>
+              <input id="npassword2" type="password" name="password2" autocomplete="new-password" required>
+            </div>
+          </div>
+          <button class="btn btn-sm" type="submit">Изменить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

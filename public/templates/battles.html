@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Бои полка — {{ cfg.CLAN_TAG_DISPLAY }}{% endblock %}
+{% block desc %}Лог полковых боёв {{ cfg.CLAN_TAG_DISPLAY }}: результаты, MVP.{% endblock %}
+
+{% block body %}
+<section class="page-top">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-kicker">// Бои</div>
+      <h1 class="sec-title">Лог боёв {{ cfg.CLAN_TAG_DISPLAY }}</h1>
+      <p class="sec-sub">Заносится вручную командой /logbattle в Discord — автоматической истории боёв War Thunder не отдаёт.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>{{ counts.total }}</b><span>Боёв записано</span></div>
+      <div class="stat"><b>{{ counts.wins }}</b><span>Побед</span></div>
+      <div class="stat"><b>{{ counts.losses }}</b><span>Поражений</span></div>
+    </div>
+
+    {% if rows %}
+      <div class="news-grid">
+        {% for b in rows %}
+          <div class="card post-card" style="padding:22px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <span class="badge {{ 'accepted' if b.result == 'win' else ('rejected' if b.result == 'loss' else 'review') }}">
+                {{ {'win': 'Победа', 'loss': 'Поражение', 'draw': 'Ничья'}[b.result] }}
+              </span>
+              <span class="mono dim" style="font-size:12px">{{ b.created_at|dt }}</span>
+            </div>
+            <h3>vs {{ b.opponent }}</h3>
+            <p>
+              {% if b.br %}БР {{ b.br }}{% endif %}{% if b.mode %} · {{ b.mode }}{% endif %}
+              {% if b.mvp_nick %}<br>MVP: <b>{{ b.mvp_nick }}</b>{% endif %}
+              {% if b.note %}<br>{{ b.note }}{% endif %}
+            </p>
+            <p class="mono dim" style="font-size:11.5px;margin-top:10px">залогировал {{ b.logged_by }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty roster-empty">
+        <div class="roster-empty-ico">🐺</div>
+        <p>Пока ни одного боя не записано.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

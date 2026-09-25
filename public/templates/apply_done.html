@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Заявка отправлена — {{ cfg.CLAN_TAG_DISPLAY }}{% endblock %}
+
+{% block body_class %}page-center{% endblock %}
+
+{% block body %}
+<section class="page-top done-page">
+  <div class="wrap narrow center">
+    <div class="hero-badge center-badge"><span class="pulse"></span> ЗАЯВКА ПРИНЯТА{% if app_id %} · #{{ app_id }}{% endif %}</div>
+    <h1 class="done-title">Мы тебя увидели</h1>
+    <p class="sec-sub center-sub">
+      Заявка ушла командирам полка. Ответ придёт в Discord — если ты ещё не на сервере,
+      сделай это прямо сейчас, иначе связаться будет негде.
+    </p>
+    <div class="done-actions">
+      <a class="btn btn-dc" href="{{ cfg.DISCORD_INVITE }}" target="_blank" rel="noopener">Зайти в Discord</a>
+      <a class="btn" href="{{ url_for('index') }}">На главную</a>
+    </div>
+    <p class="done-motto mono">
+      {{ cfg.CLAN_MOTTO }}
+    </p>
+  </div>
+</section>
+{% endblock %}

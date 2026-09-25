@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}{{ cfg.CLAN_TAG_DISPLAY }} — {{ cfg.CLAN_NAME }}{% endblock %}</title>
+<meta name="description" content="{% block desc %}Полк War Thunder {{ cfg.CLAN_TAG_DISPLAY }}. Топ авиации I–IX, АРБ и танки. Полковые бои составом, войс, Discord.{% endblock %}">
+<meta name="theme-color" content="#060608">
+<meta name="robots" content="index, follow">
+<meta property="og:site_name" content="1wolf.ru">
+<meta property="og:title" content="{% block og_title %}{{ cfg.CLAN_TAG_DISPLAY }} — {{ cfg.CLAN_NAME }}{% endblock %}">
+<meta property="og:description" content="{% block og_desc %}Полк War Thunder. Мы не надеемся — мы охотимся.{% endblock %}">
+<meta property="og:type" content="website">
+<meta property="og:image" content="{{ url_for('static', filename='img/logo.png') }}">
+<link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<div class="bg-aurora"></div><div class="bg-grid"></div><div class="bg-vignette"></div>
+<div class="cur-dot"></div><div class="cur-ret"></div>
+
+<nav class="nav">
+  <a class="nav-brand" href="{{ url_for('index') }}">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="{{ cfg.CLAN_TAG }}">
+    <span>{{ cfg.CLAN_TAG_DISPLAY }}</span>
+  </a>
+  <button class="nav-burger" type="button" aria-label="Меню" aria-expanded="false"><span></span><span></span></button>
+  <div class="nav-links">
+    <a href="{{ url_for('news_list') }}">Новости</a>
+    <a href="{{ url_for('roster_page') }}">Состав</a>
+    <a href="{{ url_for('battles_page') }}">Бои</a>
+    <a href="{{ url_for('index') }}#about">Полк</a>
+    <a href="{{ url_for('index') }}#req">Требования</a>
+    {% if user %}
+      <a href="{{ url_for('account') }}">{{ user.username }}</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">Вход</a>
+    {% endif %}
+    <a class="btn btn-sm btn-primary" href="{{ url_for('apply_form') }}">Заявка</a>
+  </div>
+</nav>
+
+<main>
+{% block body %}{% endblock %}
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>{{ cfg.CLAN_TAG_DISPLAY }} · {{ cfg.CLAN_NAME }} · {{ cfg.CLAN_REGION }}</div>
+    <div class="foot-links">
+      <a href="{{ cfg.DISCORD_INVITE }}" target="_blank" rel="noopener">Discord</a>
+      <a href="{{ url_for('news_list') }}">Новости</a>
+      <a href="{{ url_for('apply_form') }}">Заявка</a>
+      <a href="{{ cfg.KVIYX_URL }}" target="_blank" rel="noopener">VPN: KVIYX</a>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

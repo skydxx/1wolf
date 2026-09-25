@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}Заявка в {{ cfg.CLAN_TAG_DISPLAY }}{% endblock %}
+
+{% block body %}
+<section class="page-top">
+  <div class="wrap narrow">
+    <div class="sec-head">
+      <div class="sec-kicker">// Заявка в полк</div>
+      <h1 class="sec-title">Вступить в {{ cfg.CLAN_TAG_DISPLAY }}</h1>
+      <p class="sec-sub">
+        Заполняй честно — проверяем. Ответ приходит в Discord, поэтому
+        <a href="{{ cfg.DISCORD_INVITE }}" target="_blank" rel="noopener">зайди на сервер</a> до отправки формы.
+      </p>
+    </div>
+
+    {% include "_flash.html" %}
+
+    <form class="form" method="post" action="{{ url_for('apply_submit') }}" enctype="multipart/form-data" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input class="honey" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <div class="row2">
+        <div class="field">
+          <label for="real_name">Реальное имя <span class="req-star">*</span></label>
+          <input id="real_name" type="text" name="real_name" maxlength="40" required value="{{ form.real_name or '' }}" placeholder="как к тебе обращаться">
+        </div>
+        <div class="field">
+          <label for="nick">Ник в War Thunder <span class="req-star">*</span></label>
+          <input id="nick" type="text" name="nick" maxlength="40" required value="{{ form.nick or '' }}" placeholder="как в игре, точно">
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="discord_nick">Ник в Discord <span class="req-star">*</span></label>
+          <input id="discord_nick" type="text" name="discord_nick" maxlength="40" required value="{{ form.discord_nick or '' }}" placeholder="username">
+        </div>
+        <div class="field">
+          <label for="discord_id">Discord ID</label>
+          <input id="discord_id" type="text" name="discord_id" maxlength="25" value="{{ form.discord_id or '' }}" placeholder="ID пользователя Discord">
+          <div class="hint">не обязательно · Настройки → Расширенные → Режим разработчика → ПКМ по себе</div>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="age">Возраст</label>
+          <input id="age" type="text" name="age" maxlength="10" value="{{ form.age or '' }}" placeholder="18">
+        </div>
+        <div class="field">
+          <label for="tz">Часовой пояс / город</label>
+          <input id="tz" type="text" name="tz" maxlength="40" value="{{ form.tz or '' }}" placeholder="МСК">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="main_mode">Основное направление</label>
+        <select id="main_mode" name="main_mode">
+          {% for v in ['Авиация', 'Танки', 'Авиация + танки'] %}
+            <option value="{{ v }}" {% if form.main_mode == v %}selected{% endif %}>{{ v }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="top_br">Топ-техника и БР</label>
+          <input id="top_br" type="text" name="top_br" maxlength="120" value="{{ form.top_br or '' }}" placeholder="F-16C, 12.7 / Су-27, 13.0">
+        </div>
+        <div class="field">
+          <label for="hours">Наиграно часов</label>
+          <input id="hours" type="text" name="hours" maxlength="30" value="{{ form.hours or '' }}" placeholder="2500">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="playtime">Когда обычно в игре</label>
+        <input id="playtime" type="text" name="playtime" maxlength="120" value="{{ form.playtime or '' }}" placeholder="будни после 19:00 МСК, выходные весь день">
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="prev_clans">Прошлые полки</label>
+          <input id="prev_clans" type="text" name="prev_clans" maxlength="120" value="{{ form.prev_clans or '' }}" placeholder="теги и почему ушёл">
+        </div>
+        <div class="field">
+          <label for="source">Откуда узнал о нас</label>
+          <input id="source" type="text" name="source" maxlength="120" value="{{ form.source or '' }}" placeholder="форум / друг / бой">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="about">О себе</label>
+        <textarea id="about" name="about" maxlength="4000" placeholder="Чем полезен полку, опыт в полковых, чего ждёшь от состава.">{{ form.about or '' }}</textarea>
+      </div>
+
+      <div class="field">
+        <label>Скриншоты и файлы</label>
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Выбрать файлы">
+          <div class="drop-big">Перетащи сюда или нажми, чтобы выбрать</div>
+          <div class="drop-small mono">до {{ cfg.MAX_FILES }} файлов · до {{ cfg.MAX_FILE_MB }} МБ каждый · {{ cfg.ALLOWED_EXT|sort|join(', ') }}</div>
+          <input type="file" name="attachments" id="files" multiple hidden
+                 accept="{% for e in cfg.ALLOWED_EXT|sort %}.{{ e }}{% if not loop.last %},{% endif %}{% endfor %}">
+        </div>
+        <div class="filelist" id="filelist"></div>
+        <div class="hint">Статистика профиля, ангар с топ-техникой, реплей хорошего боя — всё ускоряет рассмотрение.</div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" name="joined_discord" value="1" required>
+        <span><b>Я вступил в Discord-сервер полка <span class="req-star">*</span></b>
+        <span>Обязательно: <a href="{{ cfg.DISCORD_INVITE }}" target="_blank" rel="noopener">{{ cfg.DISCORD_INVITE }}</a> — ответ придёт туда.</span></span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" name="has_mic" value="1" required>
+        <span><b>У меня есть рабочий микрофон <span class="req-star">*</span></b>
+        <span>Полковые играются в войсе, без микрофона в звено не берём.</span></span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" name="rules_ok" value="1" required>
+        <span><b>Требования прочитал, всё подходит <span class="req-star">*</span></b>
+        <span>Топ-техника, регулярное присутствие на полковых, адекватность к своим.</span></span>
+      </label>
+
+      <button class="btn btn-primary form-submit" type="submit">Отправить заявку →</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/apply.js') }}" defer
+        data-max-files="{{ cfg.MAX_FILES }}" data-max-mb="{{ cfg.MAX_FILE_MB }}"></script>
+{% endblock %}

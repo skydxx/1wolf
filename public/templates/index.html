@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block body %}
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-badge"><span class="pulse"></span> НАБОР ОТКРЫТ · {{ cfg.CLAN_REGION }}</div>
+    <img class="hero-logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="{{ cfg.CLAN_TAG }}">
+    <h1><span class="tag">{{ cfg.CLAN_TAG_DISPLAY }}</span></h1>
+    <div class="hero-name">{{ cfg.CLAN_NAME }}</div>
+    <p class="hero-motto">Мы не надеемся. <span>Мы охотимся.</span></p>
+    <p class="hero-desc">
+      Полк War Thunder. Топ авиации I–IX, АРБ, плюс танковое крыло.
+      Играем полковые бои регулярно, составом, на результат — и тянем рейтинг вверх.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="{{ url_for('apply_form') }}">Подать заявку →</a>
+      <a class="btn btn-dc" href="{{ cfg.DISCORD_INVITE }}" target="_blank" rel="noopener">Discord-сервер</a>
+    </div>
+    <div class="hero-meta">
+      <span><b>Тег:</b> {{ cfg.CLAN_TAG_DISPLAY }}</span>
+      <span><b>Регион:</b> {{ cfg.CLAN_REGION }}</span>
+      <span><b>Режимы:</b> АРБ · полковые · танки</span>
+      <span><b>Войс:</b> обязателен</span>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-kicker">// О полке</div>
+      <h2 class="sec-title">Не «клан для галочки»</h2>
+      <p class="sec-sub">Мы собираем состав, который летает вместе, а не рядом. Звено, войс, разбор — и результат в таблице.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-ico">✈</div>
+        <h3>Топ авиации I–IX</h3>
+        <p>Основа полка — реалистичные бои на топе. Звенья по 2–4, распределение ролей, контроль высоты и энергии.</p>
+      </div>
+      <div class="card">
+        <div class="card-ico warm">⚔</div>
+        <h3>Полковые бои</h3>
+        <p>Играем регулярно и составом, а не «когда соберётся хоть кто-то». Цель простая — тянуть рейтинг вверх.</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">◈</div>
+        <h3>Танковое крыло</h3>
+        <p>Не только небо: у нас есть и танкисты. Смешанные сквады, поддержка с воздуха, нормальная координация.</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">🎙</div>
+        <h3>Войс и дисциплина</h3>
+        <p>Discord всегда. Без крика и токсичности, но и без «я тут просто полетать зашёл» на полковых.</p>
+      </div>
+      <div class="card">
+        <div class="card-ico warm">↗</div>
+        <h3>Рост состава</h3>
+        <p>Новичкам в топе помогаем разобраться — тактика, тренировки, разбор ошибок. Учим, а не выгоняем.</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">◎</div>
+        <h3>Адекватность</h3>
+        <p>Взрослый состав, без драмы и детского сада. Уважение к своим — базовое требование, не бонус.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="req">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-kicker">// Требования</div>
+      <h2 class="sec-title">Что нужно, чтобы залететь</h2>
+      <p class="sec-sub">Список короткий и честный. Всё, что ниже — обязательно, а не «желательно».</p>
+    </div>
+    <ul class="req">
+      <li><span class="n">01</span><div><b>Топ-техника</b><span class="t">Авиация ранга VII+ (в идеале VIII–IX) в исследованном и боеспособном виде. Танкистам — топовая ветка.</span></div></li>
+      <li><span class="n">02</span><div><b>Микрофон</b><span class="t">Полковые играются в войсе. Без микрофона в звено взять не сможем — это не принципиальность, это физика.</span></div></li>
+      <li><span class="n">03</span><div><b>Discord</b><span class="t">Вступление на сервер — обязательное условие. Все сборы, объявления и заявки идут только там.</span></div></li>
+      <li><span class="n">04</span><div><b>Адекватность</b><span class="t">Спокойная реакция на разбор ошибок, никакой токсичности к своим. Умение слушать звено важнее личного К/Д.</span></div></li>
+      <li><span class="n">05</span><div><b>Присутствие</b><span class="t">Появляться на полковых регулярно. Пропадать на месяц без предупреждения — повод освободить слот.</span></div></li>
+    </ul>
+    <div class="stats">
+      <div class="stat"><b>I–IX</b><span>Ранги авиации</span></div>
+      <div class="stat"><b>АРБ</b><span>Основной режим</span></div>
+      <div class="stat"><b>2–4</b><span>Состав звена</span></div>
+      <div class="stat"><b>24/7</b><span>Discord-сервер</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="news">
+  <div class="wrap">
+    <div class="sec-head sec-head-row">
+      <div>
+        <div class="sec-kicker">// Сводки</div>
+        <h2 class="sec-title">Новости полка</h2>
+      </div>
+      <a class="btn btn-sm" href="{{ url_for('news_list') }}">Все новости →</a>
+    </div>
+    {% if posts %}
+      <div class="news-grid">
+        {% for p in posts %}
+          <a class="card post-card" href="{{ url_for('news_post', slug=p.slug) }}">
+            {% if p.cover %}<img class="post-cover" src="{{ url_for('media', stored_name=p.cover) }}" alt="">{% endif %}
+            <div class="post-date mono">{{ p.published_at|dt('%d.%m.%Y') }}{% if p.pinned %} · закреплено{% endif %}</div>
+            <h3>{{ p.title }}</h3>
+            <p>{{ p.summary or '' }}</p>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty">Пока тихо. Первая сводка появится здесь.</div>
+    {% endif %}
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-kicker">// Как вступить</div>
+      <h2 class="sec-title">Три шага</h2>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-ico">1</div>
+        <h3>Заходишь в Discord</h3>
+        <p>Это обязательный шаг: без сервера заявку не рассматриваем, связаться с тобой будет негде.</p>
+        <div class="card-cta"><a class="btn btn-sm btn-dc" href="{{ cfg.DISCORD_INVITE }}" target="_blank" rel="noopener">Вступить</a></div>
+      </div>
+      <div class="card">
+        <div class="card-ico">2</div>
+        <h3>Заполняешь заявку</h3>
+        <p>Ник в игре, ник в Discord, техника и наигранное. Скрины статистики сильно ускоряют рассмотрение.</p>
+        <div class="card-cta"><a class="btn btn-sm" href="{{ url_for('apply_form') }}">Форма заявки</a></div>
+      </div>
+      <div class="card">
+        <div class="card-ico warm">3</div>
+        <h3>Ждёшь ответа</h3>
+        <p>Смотрим заявку, при необходимости зовём в войс поговорить и слетать пару боёв. Ответ — в Discord.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap narrow">
+    <div class="sec-head">
+      <div class="sec-kicker">// FAQ</div>
+      <h2 class="sec-title">Частые вопросы</h2>
+    </div>
+    <details class="faq"><summary>Я не на топе, возьмёте?</summary>
+      <p>Если техника ниже VII ранга — скорее всего нет, полковые тебя просто выкинут. Но заходи в Discord: подскажем, что качать, и позовём, когда дорастёшь.</p></details>
+    <details class="faq"><summary>Играю только танки. Подойду?</summary>
+      <p>Да, танковое крыло есть. Но основной упор полка — авиация, имей в виду.</p></details>
+    <details class="faq"><summary>Обязательно сидеть в войсе?</summary>
+      <p>На полковых — да. В обычных боях никто не заставляет, но большая часть состава всё равно висит в дискорде.</p></details>
+    <details class="faq"><summary>Сколько ждать ответ по заявке?</summary>
+      <p>Обычно в течение суток. Ответ приходит в Discord — поэтому ник там указывай точно и на сервер зайди заранее.</p></details>
+    <details class="faq"><summary>Можно подать заявку без скриншотов?</summary>
+      <p>Можно, они не обязательны. Но заявка со скринами статистики и ангара рассматривается быстрее и охотнее.</p></details>
+    <details class="faq"><summary>Сайт или Discord не открываются?</summary>
+      <p>Бывает по провайдеру. Пользуемся своим VPN — <a href="{{ cfg.KVIYX_URL }}" target="_blank" rel="noopener">KVIYX</a>, он же объясняет, почему лимит заявок с одного адреса поднят: часто это VPN-выход на десятки человек сразу.</p></details>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta">
+      <h2>Набор открыт</h2>
+      <p>Полковые бои, топ авиации I–IX, АРБ и танки. Сквады, войс, Discord. Мы не надеемся — мы охотимся.</p>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="{{ url_for('apply_form') }}">Подать заявку</a>
+        <a class="btn btn-dc" href="{{ cfg.DISCORD_INVITE }}" target="_blank" rel="noopener">Зайти в Discord</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

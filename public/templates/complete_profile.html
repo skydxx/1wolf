@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Завершение регистрации — {{ cfg.CLAN_TAG_DISPLAY }}{% endblock %}
+
+{% block body_class %}page-center{% endblock %}
+
+{% block body %}
+<section class="page-top">
+  <div class="wrap auth-box">
+    <div class="sec-kicker">// Discord подтверждён</div>
+    <h1 class="auth-title">Осталось задать логин</h1>
+    <p class="auth-sub">Логин на сайте — навсегда, поменять потом будет нельзя. Пароль — на случай если не захочешь каждый раз через Discord.</p>
+    {% include "_flash.html" %}
+    <form class="form" method="post" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field">
+        <label for="username">Логин <span class="req-star">*</span></label>
+        <input id="username" type="text" name="username" maxlength="32" value="{{ form.username or '' }}" autocomplete="username" required>
+        <div class="hint">3–32 символа: латиница, цифры, точка, дефис. Изменить потом нельзя.</div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="password">Пароль <span class="req-star">*</span></label>
+          <input id="password" type="password" name="password" autocomplete="new-password" required>
+        </div>
+        <div class="field">
+          <label for="password2">Ещё раз <span class="req-star">*</span></label>
+          <input id="password2" type="password" name="password2" autocomplete="new-password" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="wt_nick">Ник в War Thunder</label>
+        <input id="wt_nick" type="text" name="wt_nick" maxlength="40" value="{{ form.wt_nick or '' }}">
+      </div>
+      <div class="field">
+        <label>Зачем регистрируешься? <span class="req-star">*</span></label>
+        <label class="check">
+          <input type="radio" name="intent" value="clan" {% if form.intent == 'clan' %}checked{% endif %} required>
+          <span><b>Хочу в полк</b><span>Подать заявку, следить за статусом.</span></span>
+        </label>
+        <label class="check">
+          <input type="radio" name="intent" value="music" {% if form.intent == 'music' %}checked{% endif %} required>
+          <span><b>Просто музыка и общение</b><span>Управление музыкой бота в Discord через Telegram — без заявки в полк.</span></span>
+        </label>
+      </div>
+      <button class="btn btn-primary" type="submit">Завершить регистрацию</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
